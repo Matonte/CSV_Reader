@@ -152,7 +152,7 @@ public class CSV_Reader {
 	   }
 	        
 	  // System.out.println(index);
-	    invoiceWithName.add(" \"" +firstName + " " + lastName + " \"" );
+	    invoiceWithName.add(" \"" +firstName + " "+ lastName + "\"" );
 	                    
 	        	
 	
@@ -164,11 +164,24 @@ public class CSV_Reader {
 	    	{
 	    		
 	    		invoiceWithName.add(invoiceCodes.get(k));
-	    		
+	    		invoiceWithName.add("           ");
+	    		//MSystem.out.println(invoiceCodes.get(k).contentEquals(invoiceCodesItem.get(j)));
 	    		// Add the candies 
-	    	}
-	    }
-	     
+	    		for(int j= 0; j< invoiceCodesItem.size();j++) {
+		    		System.out.println(invoiceCodes.get(k));
+		    		System.out.println("item: "+ invoiceCodesItem.get(j));
+
+	    			if( invoiceCodes.get(k).substring(1, invoiceCodes.get(k).length()-1).
+	     contentEquals( invoiceCodesItem.get(j).substring(1, invoiceCodesItem.get(j).length()-1))){
+	    				invoiceWithName.add(itemCode.get(j));
+	    				invoiceWithName.add(amountsCode.get(j));
+	    				invoiceWithName.add(quantity.get(j));
+	    				invoiceWithName.add("   ");
+	    		}
+	    	 }
+	    	
+	        }
+	      }
 	    
 	    }
 	    else System.out.println("They aren't in here.");
@@ -176,14 +189,23 @@ public class CSV_Reader {
 	    
 	  //  for(int i=0; i<invoiceWithName.size(); i++)
 	   // System.out.println(invoiceWithName.get(i));
-	    
-		FileWriter	writer = new FileWriter("CustomerSample.csv");
+	 /*	FileWriter	writer = new FileWriter("CustomerSample.csv");
 
 	    String collect = invoiceWithName.stream().collect(Collectors.joining(","));
 	    System.out.println(collect);
-
-	    writer.write(collect);
-	    writer.close();
+*/
+	    
+	    File csvFile = new File("CustomerSample.csv");
+	    try (PrintWriter csvWriter = new PrintWriter(new FileWriter(csvFile));){
+	      for(String item : invoiceWithName){
+	        csvWriter.println(item);
+	      }
+	    } catch (IOException e) {
+	        //Handle exception
+	        e.printStackTrace();
+	    }
+	    //writer.write(collect);
+	    //writer.close();
 	    
 	}
 	
