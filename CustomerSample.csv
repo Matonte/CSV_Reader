@@ -1,25 +1,4 @@
- "Maria Alba"
-”IN0000001”
-           
-”MEIJI”
-”75.60”
-”100”
-   
-”POCKY”
-”10.40”
-”250”
-   
-”PUCCHO”
-”19.50”
-”40”
-   
-”IN0000003”
-           
-”POCKY”
-”16.64”
-”400”
-   
-”PUCCHO”
-”97.50”
-”200”
-   
+“CUSTOMER_CODE”,”FIRSTNAME”,”LASTNAME”, 
+“CUST0000010231”,”Maria”,”Alba”, 
+“CUST0000010235”,”George”,”Lucas”, 
+ "CUST00000000123", "Bart", "Simpson", 

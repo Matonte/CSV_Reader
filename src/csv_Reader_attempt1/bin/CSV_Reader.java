@@ -2,6 +2,8 @@ package csv_Reader_attempt1.bin;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CSV_Reader {
@@ -33,7 +35,8 @@ public class CSV_Reader {
 	   
 	   
 	   //
-	   
+	   // For each CSV, create an atomized-by-column table structure. 
+	   // When ORM is implemented, will use Hibernate/MySQL instead
 	 public static void readCustomer() throws IOException {
 		    BufferedReader reader = new BufferedReader(new FileReader("Customer.csv"));
 		   
@@ -106,21 +109,31 @@ public class CSV_Reader {
 		  }
 	
 	
-	@SuppressWarnings("unused")
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		
-		//File file = new File(".");
-		//for(String fileNames : file.list()) System.out.println(fileNames);
-		try {
-			readCustomer();
-			readInvoice();
-			readInvoiceItem();
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	 public static void loadCSVs() {
+		 try {
+				readCustomer();
+				readInvoice();
+				readInvoiceItem();
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 
+	 }
+	 
+	 public static int accessSystem() {
+			Scanner pick =  new Scanner(System.in);
+			   System.out.println("What do you want to do?" +"\n "
+			   		+ "1)Customer Purchase History " + "\n" +
+					     "2)Add a new Customer "+ "\n" +
+					     "3)Add a new Order ");
+
+			   	return Integer.parseInt(pick.nextLine().trim());   
+	 }
+	 
+	 public static void printCustomerOrders() {
+		   
 		    //createNames(first,last);
 		Scanner firstn = new Scanner(System.in);  // Create a Scanner object
 	    System.out.println("Enter First Name of the Customer that you want");
@@ -136,9 +149,7 @@ public class CSV_Reader {
 		// Retrieve all the invoices for requested customer. 
 	    int index = -1; 
 	    
-	  //  System.out.println(lastName);
-	 //   System.out.println(lastName.contentEquals( last.get(1).substring(1, last.get(1).length()-1)));
-	 //   System.out.println(firstName.indexOf(firstName));
+
 	   for (int i=0; i<last.size(); i++) {
 		   if (lastName.contentEquals( last.get(i).substring(1, last.get(i).length()-1)));
 		   {
@@ -168,8 +179,8 @@ public class CSV_Reader {
 	    		//MSystem.out.println(invoiceCodes.get(k).contentEquals(invoiceCodesItem.get(j)));
 	    		// Add the candies 
 	    		for(int j= 0; j< invoiceCodesItem.size();j++) {
-		    		System.out.println(invoiceCodes.get(k));
-		    		System.out.println("item: "+ invoiceCodesItem.get(j));
+		    	//	System.out.println(invoiceCodes.get(k));
+		    	//	System.out.println("item: "+ invoiceCodesItem.get(j));
 
 	    			if( invoiceCodes.get(k).substring(1, invoiceCodes.get(k).length()-1).
 	     contentEquals( invoiceCodesItem.get(j).substring(1, invoiceCodesItem.get(j).length()-1))){
@@ -187,14 +198,6 @@ public class CSV_Reader {
 	    else System.out.println("They aren't in here.");
 	     
 	    
-	  //  for(int i=0; i<invoiceWithName.size(); i++)
-	   // System.out.println(invoiceWithName.get(i));
-	 /*	FileWriter	writer = new FileWriter("CustomerSample.csv");
-
-	    String collect = invoiceWithName.stream().collect(Collectors.joining(","));
-	    System.out.println(collect);
-*/
-	    
 	    File csvFile = new File("CustomerSample.csv");
 	    try (PrintWriter csvWriter = new PrintWriter(new FileWriter(csvFile));){
 	      for(String item : invoiceWithName){
@@ -209,5 +212,82 @@ public class CSV_Reader {
 	    
 	}
 	
-	
+	 public static void addNewCustomer() {
+			Scanner firstn = new Scanner(System.in);  // Create a Scanner object
+		    System.out.println("Enter First Name of the Customer that you want to add.");
+		    
+		    String firstName  = firstn.nextLine();  // Read user input
+		    
+			Scanner lastn = new Scanner(System.in);  // Create a Scanner object
+		    System.out.println("Enter Last Name of the Customer that you want to add");
+		    
+		    String lastName  = lastn.nextLine();  // Read user input
+		    
+		    boolean good= false;
+		    String custCode= " ";
+		    
+		    while(!good) {
+			Scanner customerCode = new Scanner(System.in);  // Create a Scanner object
+		    System.out.println("Enter the customer code of the new customer.");
+		    
+		    
+		     String pattern = "^CUST00000\\d{6}";
+
+		      // Create a Pattern object
+		      Pattern r = Pattern.compile(pattern);
+		      
+		      // Now create matcher object.
+		    custCode  = customerCode.nextLine();  // Read user input
+		    Matcher m = r.matcher(custCode);
+		    good = m.find();
+		    }    	   
+		    	
+			    System.out.println("You are adding  " + firstName +" "+ lastName);  // Output user input
+			    // Perform the logic
+			    customerCodes.add(" \"" +custCode+"\"");
+				 first.add(" \"" +firstName+"\"");
+				  last.add(" \"" +lastName+"\"");
+				  
+				  File csvFile = new File("CustomerSample.csv");
+				    try (PrintWriter csvWriter = new PrintWriter(new FileWriter(csvFile));){
+				      for(int i=0;i < customerCodes.size();i++){
+				        csvWriter.print(customerCodes.get(i) +",");
+				        csvWriter.print(first.get(i) + ",");
+				        csvWriter.print(last.get(i) + ",");
+				        csvWriter.println(" ");
+				        
+				      }
+				    } catch (IOException e) {
+				        //Handle exception
+				    	
+				        e.printStackTrace();
+				    }
+						    }
+		
+			// At this point, all the data is processed into the "database"
+			// Retrieve all the invoices for requested customer. 
+		 
+	 
+	 
+	 
+	public static void main(String[] args) throws IOException {
+		
+		loadCSVs();
+	   
+		switch(accessSystem()) {
+		case 1:
+			printCustomerOrders();
+			accessSystem();
+		break;
+		case 2: 
+			addNewCustomer();
+			accessSystem();
+		break;
+		//case: 3:
+		//	addNewOrder();
+	    // break;
+		default: 
+			accessSystem();
+		}
+     }
 }
