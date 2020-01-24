@@ -24,16 +24,7 @@ public class CSV_Reader {
 	   static  public ArrayList<String> quantity = new ArrayList<>();
 	   
 	   static public ArrayList<String> invoiceWithName = new ArrayList<>();
-	/*   
-	   static  public HashSet<String,String> customerLookup = new HashMap<String,String>();
-	   
-	 public static void createNames(ArrayList<String> first, ArrayList<String>last) {
-		 for (int i=0 ; i < first.size(); i++) customerLookup.put(first.get(i), last.get(i));
-	 }
-	 */
-	   //
-	   
-	   
+
 	   //
 	   // For each CSV, create an atomized-by-column table structure. 
 	   // When ORM is implemented, will use Hibernate/MySQL instead
@@ -44,9 +35,7 @@ public class CSV_Reader {
 		    String[] tokens;
 		    while ((line = reader.readLine()) != null) {
 		      tokens = line.split(",");
-		     // if (tokens.length != 2) { // Skip any "weird" (e.g., empty) line
-		      //  continue;
-		     // }
+		
 		      customerCodes.add(tokens[0].trim().replace("\"", ""));
 		      first.add(tokens[1].trim().replace("\"", ""));
 		      last.add(tokens[2].trim().replace("\"", ""));
@@ -127,7 +116,9 @@ public class CSV_Reader {
 			   System.out.println("What do you want to do?" +"\n "
 			   		+ "1)Customer Purchase History " + "\n" +
 					     "2)Add a new Customer "+ "\n" +
-					     "3)Add a new Order ");
+					     "3)Add a new Order "+ "\n" +
+					     "4)Add to an existing Order "+ "\n" +
+					     "5)Exit " );
 
 			   	return Integer.parseInt(pick.nextLine().trim());   
 	 }
@@ -268,7 +259,14 @@ public class CSV_Reader {
 			// Retrieve all the invoices for requested customer. 
 		 
 	 
+	 static void addNewOrder(){
+		 
+		 
+	 }
 	 
+	 static void addToOrder() {
+		 
+	 }
 	 
 	public static void main(String[] args) throws IOException {
 		
@@ -278,14 +276,19 @@ public class CSV_Reader {
 		case 1:
 			printCustomerOrders();
 			accessSystem();
-		break;
 		case 2: 
 			addNewCustomer();
 			accessSystem();
-		break;
-		//case: 3:
-		//	addNewOrder();
-	    // break;
+	
+		case 3:
+			addNewOrder();
+			accessSystem();
+	   
+		case 4:
+			addToOrder();
+			accessSystem();
+		case 5: 
+			System.exit(0);
 		default: 
 			accessSystem();
 		}
